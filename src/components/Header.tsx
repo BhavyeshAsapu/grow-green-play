@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Leaf, User, Trophy, Gamepad2, LogIn, Menu, X } from "lucide-react";
 import { useState } from "react";
 
-const Header = () => {
+interface HeaderProps {
+  onLoginClick?: () => void;
+}
+
+const Header = ({ onLoginClick }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -45,7 +49,7 @@ const Header = () => {
             <User className="mr-2 h-4 w-4" />
             Profile
           </Button>
-          <Button className="bg-gradient-primary hover:opacity-90 shadow-medium">
+          <Button className="bg-gradient-primary hover:opacity-90 shadow-medium" onClick={onLoginClick}>
             <LogIn className="mr-2 h-4 w-4" />
             Login
           </Button>
@@ -78,7 +82,7 @@ const Header = () => {
               <User className="mr-2 h-4 w-4" />
               Profile
             </Button>
-            <Button className="w-full bg-gradient-primary hover:opacity-90 shadow-medium">
+            <Button className="w-full bg-gradient-primary hover:opacity-90 shadow-medium" onClick={onLoginClick}>
               <LogIn className="mr-2 h-4 w-4" />
               Login
             </Button>

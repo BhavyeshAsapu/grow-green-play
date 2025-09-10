@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Leaf, User, Mail, Phone, Lock, GraduationCap } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface RegistrationModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface RegistrationModalProps {
 }
 
 const RegistrationModal = ({ isOpen, onClose }: RegistrationModalProps) => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     fullName: "",
     surname: "",
@@ -30,6 +32,13 @@ const RegistrationModal = ({ isOpen, onClose }: RegistrationModalProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Registration data:", formData);
+    
+    // Show success toast
+    toast({
+      title: "Registration Successful!",
+      description: "Welcome to Game2Grow! Let's start your environmental learning journey.",
+    });
+    
     // Handle registration logic here
     onClose();
   };

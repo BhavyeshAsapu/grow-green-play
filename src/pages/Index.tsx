@@ -10,11 +10,13 @@ import { useState } from "react";
 const Index = () => {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
 
+  const openRegistration = () => setIsRegistrationOpen(true);
+
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header onLoginClick={openRegistration} />
       <main>
-        <WelcomeCard />
+        <WelcomeCard onGetStarted={openRegistration} />
         <CategorySection />
         <LeaderboardSection />
         <FeaturesSection />

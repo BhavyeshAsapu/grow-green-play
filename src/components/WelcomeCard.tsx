@@ -2,7 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Leaf, Sparkles, ArrowRight } from "lucide-react";
 
-const WelcomeCard = () => {
+interface WelcomeCardProps {
+  onGetStarted?: () => void;
+}
+
+const WelcomeCard = ({ onGetStarted }: WelcomeCardProps) => {
   return (
     <section className="relative overflow-hidden bg-gradient-hero py-16 lg:py-24">
       {/* Background decorations */}
@@ -35,6 +39,7 @@ const WelcomeCard = () => {
               <Button 
                 size="lg" 
                 className="bg-white text-primary hover:bg-white/90 shadow-large text-lg px-8 py-6"
+                onClick={onGetStarted}
               >
                 Start Your Journey
                 <ArrowRight className="ml-2 h-5 w-5" />
