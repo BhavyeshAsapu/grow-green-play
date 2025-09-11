@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Leaf, User, Trophy, Gamepad2, LogIn, Menu, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Leaf, User, Trophy, Gamepad2, LogIn, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   onLoginClick?: () => void;
@@ -8,6 +11,7 @@ interface HeaderProps {
 
 const Header = ({ onLoginClick }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, profile, signOut } = useAuth();
 
   return (
     <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b border-border/40">
@@ -37,22 +41,39 @@ const Header = ({ onLoginClick }: HeaderProps) => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium ml-auto">
-          <Button variant="ghost" className="hover:bg-accent/50">
-            <Gamepad2 className="mr-2 h-4 w-4" />
-            Games
-          </Button>
+          <Link to="/quiz">
+            <Button variant="ghost" className="hover:bg-accent/50">
+              <Gamepad2 className="mr-2 h-4 w-4" />
+              Quizzes
+            </Button>
+          </Link>
           <Button variant="ghost" className="hover:bg-accent/50">
             <Trophy className="mr-2 h-4 w-4" />
-            Achievements
+            Leaderboard
           </Button>
-          <Button variant="ghost" className="hover:bg-accent/50">
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </Button>
-          <Button className="bg-gradient-primary hover:opacity-90 shadow-medium" onClick={onLoginClick}>
-            <LogIn className="mr-2 h-4 w-4" />
-            Login
-          </Button>
+          
+          {user ? (
+            <div className="flex items-center space-x-4">
+              {profile && (
+                <Badge className="bg-gradient-primary text-white">
+                  <Trophy className="mr-1 h-3 w-3" />
+                  {profile.points} pts
+                </Badge>
+              )}
+              <span className="text-sm font-medium">
+                Welcome, {profile?.username || 'Player'}!
+              </span>
+              <Button variant="ghost" onClick={signOut} className="hover:bg-accent/50">
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button className="bg-gradient-primary hover:opacity-90 shadow-medium" onClick={onLoginClick}>
+              <LogIn className="mr-2 h-4 w-4" />
+              Login
+            </Button>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -70,22 +91,39 @@ const Header = ({ onLoginClick }: HeaderProps) => {
       {isMenuOpen && (
         <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur">
           <div className="container px-4 py-4 space-y-2">
-            <Button variant="ghost" className="w-full justify-start hover:bg-accent/50">
-              <Gamepad2 className="mr-2 h-4 w-4" />
-              Games
-            </Button>
+            <Link to="/quiz" className="block">
+              <Button variant="ghost" className="w-full justify-start hover:bg-accent/50">
+                <Gamepad2 className="mr-2 h-4 w-4" />
+                Quizzes
+              </Button>
+            </Link>
             <Button variant="ghost" className="w-full justify-start hover:bg-accent/50">
               <Trophy className="mr-2 h-4 w-4" />
-              Achievements
+              Leaderboard
             </Button>
-            <Button variant="ghost" className="w-full justify-start hover:bg-accent/50">
-              <User className="mr-2 h-4 w-4" />
-              Profile
-            </Button>
-            <Button className="w-full bg-gradient-primary hover:opacity-90 shadow-medium" onClick={onLoginClick}>
-              <LogIn className="mr-2 h-4 w-4" />
-              Login
-            </Button>
+            
+            {user ? (
+              <>
+                {profile && (
+                  <div className="px-4 py-2 text-center">
+                    <Badge className="bg-gradient-primary text-white">
+                      <Trophy className="mr-1 h-3 w-3" />
+                      {profile.points} pts
+                    </Badge>
+                    <p className="text-sm mt-1">Welcome, {profile.username || 'Player'}!</p>
+                  </div>
+                )}
+                <Button className="w-full bg-gradient-primary hover:opacity-90 shadow-medium" onClick={signOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button className="w-full bg-gradient-primary hover:opacity-90 shadow-medium" onClick={onLoginClick}>
+                <LogIn className="mr-2 h-4 w-4" />
+                Login
+              </Button>
+            )}
           </div>
         </div>
       )}

@@ -107,8 +107,9 @@ const CategorySection = () => {
                 <Button 
                   className="w-full bg-gradient-primary hover:opacity-90 shadow-medium"
                   size="sm"
+                  onClick={() => window.location.href = '/quiz'}
                 >
-                  Explore Games
+                  Take Quiz
                 </Button>
               </CardContent>
             </Card>

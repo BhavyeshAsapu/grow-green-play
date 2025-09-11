@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Leaf, Sparkles, ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Leaf, Sparkles, ArrowRight, Trophy } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 interface WelcomeCardProps {
   onGetStarted?: () => void;
 }
 
 const WelcomeCard = ({ onGetStarted }: WelcomeCardProps) => {
+  const { user, profile } = useAuth();
   return (
     <section className="relative overflow-hidden bg-gradient-hero py-16 lg:py-24">
       {/* Background decorations */}
@@ -25,25 +29,56 @@ const WelcomeCard = ({ onGetStarted }: WelcomeCardProps) => {
               <span className="text-white/90 text-lg font-medium">Welcome to the Future of Learning</span>
             </div>
             
-            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-              Learn, Play, and 
-              <span className="block text-yellow-300">Save the Planet!</span>
-            </h1>
-            
-            <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl">
-              Join thousands of students worldwide in our gamified environmental education platform. 
-              Turn learning into an adventure while making a real impact on our planet's future.
-            </p>
+            {user && profile ? (
+              <>
+                <div className="flex items-center justify-center lg:justify-start mb-6">
+                  <Badge className="bg-white/20 text-white border-white/30 px-4 py-2">
+                    <Trophy className="mr-2 h-4 w-4" />
+                    {profile.points} Points
+                  </Badge>
+                </div>
+                <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                  Welcome back, 
+                  <span className="block text-yellow-300">{profile.username || 'Player'}!</span>
+                </h1>
+                <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl">
+                  Ready to continue your environmental learning journey? Take on new quiz challenges and earn more points!
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                  Learn, Play, and 
+                  <span className="block text-yellow-300">Save the Planet!</span>
+                </h1>
+                <p className="text-xl text-white/90 mb-8 leading-relaxed max-w-2xl">
+                  Join thousands of students worldwide in our gamified environmental education platform. 
+                  Turn learning into an adventure while making a real impact on our planet's future.
+                </p>
+              </>
+            )}
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button 
-                size="lg" 
-                className="bg-white text-primary hover:bg-white/90 shadow-large text-lg px-8 py-6"
-                onClick={onGetStarted}
-              >
-                Start Your Journey
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              {user ? (
+                <Link to="/quiz">
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-primary hover:bg-white/90 shadow-large text-lg px-8 py-6"
+                  >
+                    Take a Quiz
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              ) : (
+                <Button 
+                  size="lg" 
+                  className="bg-white text-primary hover:bg-white/90 shadow-large text-lg px-8 py-6"
+                  onClick={onGetStarted}
+                >
+                  Start Your Journey
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              )}
               <Button 
                 size="lg" 
                 variant="outline" 

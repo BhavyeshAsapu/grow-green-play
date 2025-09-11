@@ -6,11 +6,21 @@ import FeaturesSection from "@/components/FeaturesSection";
 import Footer from "@/components/Footer";
 import RegistrationModal from "@/components/RegistrationModal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
   const [isRegistrationOpen, setIsRegistrationOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
-  const openRegistration = () => setIsRegistrationOpen(true);
+  const openRegistration = () => {
+    if (user) {
+      navigate('/quiz');
+    } else {
+      navigate('/auth');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
